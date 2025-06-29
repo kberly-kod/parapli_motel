@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { Bed, Clock, Moon, RefreshCw, Shield, Timer, Calendar, Wifi, Phone, MapPin, Star, Users, Info } from 'lucide-react';
+import { Bed, Clock, Moon, RefreshCw, Shield, Timer, Calendar, Wifi, Phone, MapPin, Star, Users, Info, QrCode, Share2 } from 'lucide-react';
 import { useApp } from '../context/AppContext';
+import QRCodeGenerator from './QRCodeGenerator';
 
 interface PublicRoomStatusProps {
   onSwitchToAdmin: () => void;
@@ -11,6 +12,7 @@ const PublicRoomStatus: React.FC<PublicRoomStatusProps> = ({ onSwitchToAdmin }) 
   const [currentTime, setCurrentTime] = useState(new Date());
   const [lastUpdate, setLastUpdate] = useState(new Date());
   const [showInfo, setShowInfo] = useState(false);
+  const [showQRCode, setShowQRCode] = useState(false);
 
   // Timer pour mettre à jour l'heure actuelle chaque seconde
   useEffect(() => {
@@ -29,6 +31,12 @@ const PublicRoomStatus: React.FC<PublicRoomStatusProps> = ({ onSwitchToAdmin }) 
 
     return () => clearInterval(interval);
   }, []);
+
+  // Générer l'URL publique
+  const getPublicUrl = () => {
+    const baseUrl = window.location.origin;
+    return baseUrl;
+  };
 
   // Fonction pour vérifier si une chambre est actuellement occupée
   const isRoomCurrentlyOccupied = (roomId: string) => {
@@ -150,6 +158,16 @@ const PublicRoomStatus: React.FC<PublicRoomStatusProps> = ({ onSwitchToAdmin }) 
               </div>
             </div>
             <div className="flex items-center space-x-4">
+              {/* QR Code Button - Nouveau dans l'espace public */}
+              <button
+                onClick={() => setShowQRCode(true)}
+                className="flex items-center space-x-2 bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white px-4 py-2 rounded-lg transition-all duration-200 shadow-lg transform hover:scale-105"
+                title="Partager ce QR Code"
+              >
+                <QrCode className="h-4 w-4" />
+                <span className="hidden md:inline">Partager QR</span>
+              </button>
+              
               <button
                 onClick={() => setShowInfo(!showInfo)}
                 className="flex items-center space-x-2 bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg transition-colors duration-200"
@@ -177,6 +195,50 @@ const PublicRoomStatus: React.FC<PublicRoomStatusProps> = ({ onSwitchToAdmin }) 
       </header>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        {/* QR Code Info Banner - Dans l'espace public */}
+        <div className="bg-gradient-to-r from-purple-50 via-pink-50 to-purple-50 border-2 border-purple-300 rounded-2xl p-6 mb-8 shadow-lg">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center space-x-4">
+              <div className="bg-gradient-to-r from-purple-500 to-pink-500 p-3 rounded-xl animate-pulse">
+                <QrCode className="h-8 w-8 text-white" />
+              </div>
+              <div>
+                <h3 className="text-xl font-bold text-gray-900">📱 Partagez cette page !</h3>
+                <p className="text-gray-600">
+                  Générez un QR code pour partager l'accès à cette page de disponibilité
+                </p>
+              </div>
+            </div>
+            <div className="flex items-center space-x-3">
+              <button
+                onClick={() => setShowQRCode(true)}
+                className="bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white px-6 py-3 rounded-xl font-medium transition-all duration-200 shadow-lg flex items-center space-x-2"
+              >
+                <QrCode className="h-5 w-5" />
+                <span>Générer QR Code</span>
+              </button>
+              <button
+                onClick={() => {
+                  if (navigator.share) {
+                    navigator.share({
+                      title: `${state.settings.motelName} - Disponibilité`,
+                      text: 'Consultez la disponibilité des chambres en temps réel',
+                      url: window.location.href
+                    });
+                  } else {
+                    navigator.clipboard.writeText(window.location.href);
+                    alert('Lien copié dans le presse-papiers !');
+                  }
+                }}
+                className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-3 rounded-xl transition-colors duration-200 flex items-center space-x-2"
+              >
+                <Share2 className="h-4 w-4" />
+                <span className="hidden md:inline">Partager</span>
+              </button>
+            </div>
+          </div>
+        </div>
+
         {/* Modal d'informations */}
         {showInfo && (
           <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
@@ -447,7 +509,7 @@ const PublicRoomStatus: React.FC<PublicRoomStatusProps> = ({ onSwitchToAdmin }) 
           </div>
           <div className="mt-4 p-4 bg-blue-50 rounded-lg border border-blue-200">
             <p className="text-sm text-blue-800">
-              <strong>💡 Astuce :</strong> Cliquez sur "Infos" pour voir nos services, tarifs et informations de contact.
+              <strong>💡 Astuce :</strong> Cliquez sur "Partager QR" pour générer un QR code et partager cette page avec d'autres personnes.
             </p>
           </div>
         </div>
@@ -460,6 +522,31 @@ const PublicRoomStatus: React.FC<PublicRoomStatusProps> = ({ onSwitchToAdmin }) 
           <div className="pt-4 border-t border-gray-200">
             <p className="text-xs">© 2024 {state.settings.motelName} - Système de gestion moderne</p>
           </div>
+        </div>
+      </div>
+
+      {/* QR Code Modal */}
+      {showQRCode && (
+        <QRCodeGenerator
+          url={getPublicUrl()}
+          onClose={() => setShowQRCode(false)}
+        />
+      )}
+
+      {/* Bouton flottant pour QR Code */}
+      <div className="fixed bottom-6 right-6 z-40">
+        <button
+          onClick={() => setShowQRCode(true)}
+          className="bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white p-4 rounded-full shadow-2xl transition-all duration-300 transform hover:scale-110 animate-bounce"
+          title="Partager QR Code"
+        >
+          <QrCode className="h-6 w-6" />
+        </button>
+        
+        {/* Tooltip */}
+        <div className="absolute bottom-16 right-0 bg-gray-900 text-white text-xs px-3 py-2 rounded-lg whitespace-nowrap opacity-0 hover:opacity-100 transition-opacity duration-200 pointer-events-none">
+          Partager cette page
+          <div className="absolute top-full right-4 w-0 h-0 border-l-4 border-r-4 border-t-4 border-transparent border-t-gray-900"></div>
         </div>
       </div>
     </div>
