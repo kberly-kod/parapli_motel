@@ -1,6 +1,7 @@
-import React from 'react';
-import { Bed, Home, Clock, Moon, Settings, Users, LogOut, BarChart3, Eye } from 'lucide-react';
+import React, { useState } from 'react';
+import { Bed, Home, Clock, Moon, Settings, Users, LogOut, BarChart3, Eye, QrCode } from 'lucide-react';
 import { useApp } from '../context/AppContext';
+import QRCodeGenerator from './QRCodeGenerator';
 
 interface LayoutProps {
   children: React.ReactNode;
@@ -11,9 +12,16 @@ interface LayoutProps {
 
 const Layout: React.FC<LayoutProps> = ({ children, currentPage, onNavigate, onSwitchToPublic }) => {
   const { state, dispatch } = useApp();
+  const [showQRCode, setShowQRCode] = useState(false);
 
   const handleLogout = () => {
     dispatch({ type: 'SET_AUTH', payload: false });
+  };
+
+  // Générer l'URL publique
+  const getPublicUrl = () => {
+    const baseUrl = window.location.origin;
+    return baseUrl; // L'URL racine mène directement à la vue publique
   };
 
   const navigation = [
@@ -41,13 +49,23 @@ const Layout: React.FC<LayoutProps> = ({ children, currentPage, onNavigate, onSw
               </div>
             </div>
             <div className="flex items-center space-x-3">
+              {/* QR Code Button */}
+              <button
+                onClick={() => setShowQRCode(true)}
+                className="flex items-center space-x-2 bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white px-4 py-2 rounded-lg transition-all duration-200 shadow-lg"
+                title="Générer QR Code pour accès public"
+              >
+                <QrCode className="h-4 w-4" />
+                <span className="hidden md:inline">QR Code</span>
+              </button>
+              
               {onSwitchToPublic && (
                 <button
                   onClick={onSwitchToPublic}
                   className="flex items-center space-x-2 bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg transition-colors duration-200"
                 >
                   <Eye className="h-4 w-4" />
-                  <span>Vue Public</span>
+                  <span className="hidden md:inline">Vue Public</span>
                 </button>
               )}
               <button
@@ -55,7 +73,7 @@ const Layout: React.FC<LayoutProps> = ({ children, currentPage, onNavigate, onSw
                 className="flex items-center space-x-2 bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg transition-colors duration-200"
               >
                 <LogOut className="h-4 w-4" />
-                <span>Déconnexion</span>
+                <span className="hidden md:inline">Déconnexion</span>
               </button>
             </div>
           </div>
@@ -86,6 +104,25 @@ const Layout: React.FC<LayoutProps> = ({ children, currentPage, onNavigate, onSw
                 );
               })}
             </ul>
+
+            {/* QR Code Section in Sidebar */}
+            <div className="mt-8 p-4 bg-gradient-to-br from-purple-50 to-pink-50 rounded-xl border border-purple-200">
+              <div className="text-center">
+                <div className="bg-gradient-to-r from-purple-500 to-pink-500 p-3 rounded-lg inline-block mb-3">
+                  <QrCode className="h-6 w-6 text-white" />
+                </div>
+                <h3 className="font-bold text-gray-900 mb-2">QR Code Client</h3>
+                <p className="text-xs text-gray-600 mb-3">
+                  Générez un QR code pour que vos clients puissent voir la disponibilité en temps réel
+                </p>
+                <button
+                  onClick={() => setShowQRCode(true)}
+                  className="w-full bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200"
+                >
+                  Générer QR Code
+                </button>
+              </div>
+            </div>
           </div>
         </nav>
 
@@ -94,6 +131,14 @@ const Layout: React.FC<LayoutProps> = ({ children, currentPage, onNavigate, onSw
           {children}
         </main>
       </div>
+
+      {/* QR Code Modal */}
+      {showQRCode && (
+        <QRCodeGenerator
+          url={getPublicUrl()}
+          onClose={() => setShowQRCode(false)}
+        />
+      )}
     </div>
   );
 };

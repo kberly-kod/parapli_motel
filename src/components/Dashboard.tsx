@@ -1,5 +1,5 @@
 import React from 'react';
-import { Clock, Moon, Bed, DollarSign, Users, Calendar } from 'lucide-react';
+import { Clock, Moon, Bed, DollarSign, Users, Calendar, QrCode, Smartphone } from 'lucide-react';
 import { useApp } from '../context/AppContext';
 
 const Dashboard: React.FC = () => {
@@ -70,6 +70,38 @@ const Dashboard: React.FC = () => {
             month: 'long',
             day: 'numeric'
           })}
+        </div>
+      </div>
+
+      {/* QR Code Info Banner */}
+      <div className="bg-gradient-to-r from-purple-50 via-pink-50 to-purple-50 border border-purple-200 rounded-xl p-6">
+        <div className="flex items-center justify-between">
+          <div className="flex items-center space-x-4">
+            <div className="bg-gradient-to-r from-purple-500 to-pink-500 p-3 rounded-xl">
+              <QrCode className="h-8 w-8 text-white" />
+            </div>
+            <div>
+              <h3 className="text-xl font-bold text-gray-900">🚀 Nouveau : QR Code Client</h3>
+              <p className="text-gray-600">
+                Permettez à vos clients de voir la disponibilité des chambres en temps réel via QR code
+              </p>
+            </div>
+          </div>
+          <div className="flex items-center space-x-3">
+            <div className="text-right hidden md:block">
+              <div className="flex items-center space-x-2 text-sm text-gray-600 mb-1">
+                <Smartphone className="h-4 w-4" />
+                <span>Accès mobile optimisé</span>
+              </div>
+              <div className="flex items-center space-x-2 text-sm text-gray-600">
+                <Clock className="h-4 w-4" />
+                <span>Mise à jour temps réel</span>
+              </div>
+            </div>
+            <div className="bg-gradient-to-r from-purple-500 to-pink-500 text-white px-4 py-2 rounded-lg text-sm font-medium">
+              Cliquez sur "QR Code" dans le header
+            </div>
+          </div>
         </div>
       </div>
 
