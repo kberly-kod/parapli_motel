@@ -49,14 +49,14 @@ const Layout: React.FC<LayoutProps> = ({ children, currentPage, onNavigate, onSw
               </div>
             </div>
             <div className="flex items-center space-x-3">
-              {/* QR Code Button */}
+              {/* QR Code Button - Plus visible */}
               <button
                 onClick={() => setShowQRCode(true)}
-                className="flex items-center space-x-2 bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white px-4 py-2 rounded-lg transition-all duration-200 shadow-lg"
+                className="flex items-center space-x-2 bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white px-6 py-3 rounded-xl transition-all duration-200 shadow-lg transform hover:scale-105 animate-pulse"
                 title="Générer QR Code pour accès public"
               >
-                <QrCode className="h-4 w-4" />
-                <span className="hidden md:inline">QR Code</span>
+                <QrCode className="h-5 w-5" />
+                <span className="font-medium">QR Code Client</span>
               </button>
               
               {onSwitchToPublic && (
@@ -105,23 +105,41 @@ const Layout: React.FC<LayoutProps> = ({ children, currentPage, onNavigate, onSw
               })}
             </ul>
 
-            {/* QR Code Section in Sidebar */}
-            <div className="mt-8 p-4 bg-gradient-to-br from-purple-50 to-pink-50 rounded-xl border border-purple-200">
+            {/* QR Code Section in Sidebar - Plus proéminent */}
+            <div className="mt-8 p-6 bg-gradient-to-br from-purple-50 via-pink-50 to-purple-50 rounded-xl border-2 border-purple-300 shadow-lg">
               <div className="text-center">
-                <div className="bg-gradient-to-r from-purple-500 to-pink-500 p-3 rounded-lg inline-block mb-3">
-                  <QrCode className="h-6 w-6 text-white" />
+                <div className="bg-gradient-to-r from-purple-500 to-pink-500 p-4 rounded-xl inline-block mb-4 animate-bounce">
+                  <QrCode className="h-8 w-8 text-white" />
                 </div>
-                <h3 className="font-bold text-gray-900 mb-2">QR Code Client</h3>
-                <p className="text-xs text-gray-600 mb-3">
-                  Générez un QR code pour que vos clients puissent voir la disponibilité en temps réel
+                <h3 className="font-bold text-gray-900 mb-2 text-lg">🚀 QR Code Client</h3>
+                <p className="text-sm text-gray-600 mb-4 leading-relaxed">
+                  Générez un QR code pour que vos clients puissent voir la disponibilité des chambres en temps réel
                 </p>
                 <button
                   onClick={() => setShowQRCode(true)}
-                  className="w-full bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200"
+                  className="w-full bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white px-4 py-3 rounded-xl text-sm font-bold transition-all duration-200 shadow-lg transform hover:scale-105"
                 >
+                  <QrCode className="h-4 w-4 inline mr-2" />
                   Générer QR Code
                 </button>
+                
+                {/* Indicateur visuel */}
+                <div className="mt-3 flex items-center justify-center space-x-2 text-xs text-purple-600">
+                  <div className="w-2 h-2 bg-purple-500 rounded-full animate-ping"></div>
+                  <span className="font-medium">Nouveau !</span>
+                </div>
               </div>
+            </div>
+
+            {/* Instructions rapides */}
+            <div className="mt-4 p-4 bg-blue-50 rounded-lg border border-blue-200">
+              <h4 className="font-medium text-blue-900 mb-2 text-sm">💡 Comment utiliser :</h4>
+              <ol className="text-xs text-blue-800 space-y-1">
+                <li>1. Cliquez sur "QR Code"</li>
+                <li>2. Téléchargez ou partagez</li>
+                <li>3. Clients scannent avec leur téléphone</li>
+                <li>4. Accès instantané à la disponibilité</li>
+              </ol>
             </div>
           </div>
         </nav>
@@ -138,6 +156,25 @@ const Layout: React.FC<LayoutProps> = ({ children, currentPage, onNavigate, onSw
           url={getPublicUrl()}
           onClose={() => setShowQRCode(false)}
         />
+      )}
+
+      {/* Notification flottante pour attirer l'attention */}
+      {!showQRCode && (
+        <div className="fixed bottom-6 right-6 z-40">
+          <button
+            onClick={() => setShowQRCode(true)}
+            className="bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white p-4 rounded-full shadow-2xl transition-all duration-300 transform hover:scale-110 animate-bounce"
+            title="Générer QR Code"
+          >
+            <QrCode className="h-6 w-6" />
+          </button>
+          
+          {/* Tooltip */}
+          <div className="absolute bottom-16 right-0 bg-gray-900 text-white text-xs px-3 py-2 rounded-lg whitespace-nowrap opacity-0 hover:opacity-100 transition-opacity duration-200 pointer-events-none">
+            Générer QR Code pour clients
+            <div className="absolute top-full right-4 w-0 h-0 border-l-4 border-r-4 border-t-4 border-transparent border-t-gray-900"></div>
+          </div>
+        </div>
       )}
     </div>
   );
