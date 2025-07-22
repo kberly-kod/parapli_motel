@@ -173,7 +173,26 @@ const PublicMenu: React.FC<PublicMenuProps> = ({ onBack }) => {
                 const category = state.menuCategories.find(cat => cat.id === item.categoryId);
                 return (
                   <div key={item.id} className="bg-gradient-to-br from-yellow-50 to-orange-50 p-6 rounded-xl border-2 border-yellow-200 hover:shadow-lg transition-shadow duration-200">
-                    <div className="flex items-start justify-between mb-3">
+                    <div className="flex items-start space-x-4 mb-3">
+                      {/* Image du plat populaire */}
+                      <div className="flex-shrink-0">
+                        {item.image ? (
+                          <img
+                            src={item.image}
+                            alt={item.name}
+                            className="w-16 h-16 object-cover rounded-lg border border-yellow-300"
+                            onError={(e) => {
+                              e.currentTarget.style.display = 'none';
+                            }}
+                          />
+                        ) : (
+                          <div className="w-16 h-16 bg-yellow-100 rounded-lg border border-yellow-300 flex items-center justify-center">
+                            <ChefHat className="h-6 w-6 text-yellow-500" />
+                          </div>
+                        )}
+                      </div>
+                      
+                      {/* Contenu du plat populaire */}
                       <div className="flex-1">
                         <div className="flex items-center space-x-2 mb-2">
                           <h3 className="text-lg font-bold text-gray-900">{item.name}</h3>
@@ -191,7 +210,6 @@ const PublicMenu: React.FC<PublicMenuProps> = ({ onBack }) => {
                         </div>
                         <span className="text-xs text-yellow-600 font-medium">{category?.name}</span>
                       </div>
-                    </div>
                     {item.allergens && item.allergens.length > 0 && (
                       <div className="flex items-center space-x-1 text-xs text-orange-600 mt-2">
                         <AlertCircle className="h-3 w-3" />
@@ -224,7 +242,26 @@ const PublicMenu: React.FC<PublicMenuProps> = ({ onBack }) => {
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                 {items.map(item => (
                   <div key={item.id} className="border border-gray-200 rounded-lg p-6 hover:shadow-md transition-all duration-200 hover:border-green-300">
-                    <div className="flex justify-between items-start mb-3">
+                    <div className="flex items-start space-x-4 mb-3">
+                      {/* Image du plat */}
+                      <div className="flex-shrink-0">
+                        {item.image ? (
+                          <img
+                            src={item.image}
+                            alt={item.name}
+                            className="w-20 h-20 object-cover rounded-lg border border-gray-200"
+                            onError={(e) => {
+                              e.currentTarget.style.display = 'none';
+                            }}
+                          />
+                        ) : (
+                          <div className="w-20 h-20 bg-gray-100 rounded-lg border border-gray-200 flex items-center justify-center">
+                            <ChefHat className="h-8 w-8 text-gray-400" />
+                          </div>
+                        )}
+                      </div>
+                      
+                      {/* Contenu du plat */}
                       <div className="flex-1">
                         <div className="flex items-center space-x-2 mb-2">
                           <h3 className="text-lg font-bold text-gray-900">{item.name}</h3>
