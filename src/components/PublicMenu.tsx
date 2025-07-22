@@ -42,7 +42,7 @@ const PublicMenu: React.FC<PublicMenuProps> = ({ onBack }) => {
   // Générer l'URL du menu
   const getMenuUrl = () => {
     const baseUrl = window.location.origin;
-    return `${baseUrl}#menu`;
+    return `${baseUrl}/?view=menu`;
   };
 
   return (

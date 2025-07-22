@@ -23,11 +23,12 @@ const AppContent: React.FC = () => {
     const checkAdminRoute = () => {
       const path = window.location.pathname;
       const hash = window.location.hash;
+      const urlParams = new URLSearchParams(window.location.search);
       
       // Vérifier si l'URL contient /admin_parapli
       if (path.includes('/admin_parapli') || hash.includes('/admin_parapli')) {
         setViewMode('admin');
-      } else if (hash.includes('#menu')) {
+      } else if (hash.includes('#menu') || urlParams.get('view') === 'menu') {
         setViewMode('public');
         setShowPublicMenu(true);
       } else {
