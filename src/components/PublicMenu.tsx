@@ -309,5 +309,3 @@ const PublicMenu: React.FC<PublicMenuProps> = ({ onBack }) => {
 };
 
 export default PublicMenu;
-
-export default PublicMenu
