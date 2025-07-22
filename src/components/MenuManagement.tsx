@@ -347,6 +347,7 @@ const MenuManagement: React.FC = () => {
                             <Trash2 className="h-4 w-4" />
                           </button>
                         </div>
+                      </div>
                       
                       {item.allergens && item.allergens.length > 0 && (
                         <div className="flex items-center space-x-1 text-xs text-orange-600">
@@ -540,6 +541,20 @@ const MenuManagement: React.FC = () => {
                 <p className="text-xs text-gray-500 mt-1">
                   Utilisez des images de Pexels, Unsplash ou autres sources libres
                 </p>
+                {/* Aperçu de l'image */}
+                {itemForm.image && (
+                  <div className="mt-3">
+                    <p className="text-sm font-medium text-gray-700 mb-2">Aperçu :</p>
+                    <img
+                      src={itemForm.image}
+                      alt="Aperçu"
+                      className="w-20 h-20 object-cover rounded-lg border border-gray-200"
+                      onError={(e) => {
+                        e.currentTarget.style.display = 'none';
+                      }}
+                    />
+                  </div>
+                )}
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
