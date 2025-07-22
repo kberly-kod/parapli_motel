@@ -284,26 +284,7 @@ const MenuManagement: React.FC = () => {
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
                   {categoryItems.map((item) => (
                     <div key={item.id} className="border border-gray-200 rounded-lg p-4 hover:shadow-md transition-shadow duration-200">
-                      <div className="flex items-start space-x-3 mb-3">
-                        {/* Image du plat */}
-                        <div className="flex-shrink-0">
-                          {item.image ? (
-                            <img
-                              src={item.image}
-                              alt={item.name}
-                              className="w-16 h-16 object-cover rounded-lg border border-gray-200"
-                              onError={(e) => {
-                                e.currentTarget.style.display = 'none';
-                              }}
-                            />
-                          ) : (
-                            <div className="w-16 h-16 bg-gradient-to-br from-green-100 to-blue-100 rounded-lg border border-gray-200 flex items-center justify-center">
-                              <ChefHat className="h-6 w-6 text-gray-400" />
-                            </div>
-                          )}
-                        </div>
-                        
-                        {/* Contenu du plat */}
+                      <div className="flex items-start justify-between mb-3">
                         <div className="flex-1">
                           <div className="flex items-center space-x-2 mb-1">
                             <h4 className="font-bold text-gray-900">{item.name}</h4>
@@ -322,7 +303,7 @@ const MenuManagement: React.FC = () => {
                             )}
                           </div>
                         </div>
-                        <div className="flex items-center space-x-2">
+                        <div className="flex items-center space-x-2 ml-4">
                           <button
                             onClick={() => toggleItemAvailability(item)}
                             className={`p-1 rounded-lg transition-colors duration-200 ${
@@ -523,6 +504,22 @@ const MenuManagement: React.FC = () => {
                   rows={3}
                   required
                 />
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  URL de l'image
+                </label>
+                <input
+                  type="url"
+                  value={itemForm.image}
+                  onChange={(e) => setItemForm({ ...itemForm, image: e.target.value })}
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
+                  placeholder="https://images.pexels.com/photos/..."
+                />
+                <p className="text-xs text-gray-500 mt-1">
+                  Utilisez des images de Pexels, Unsplash ou autres sources libres
+                </p>
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">

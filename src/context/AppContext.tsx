@@ -46,10 +46,44 @@ const initialState: AppState = {
     { id: '4', name: 'Desserts', description: 'Douceurs pour finir', order: 4, isActive: true }
   ],
   menuItems: [
-    { id: '1', categoryId: '1', name: 'Salade César', description: 'Salade fraîche avec croûtons et parmesan', price: 450, isAvailable: true, isPopular: true },
-    { id: '2', categoryId: '2', name: 'Griot avec Banann', description: 'Porc frit traditionnel avec bananes plantains', price: 850, isAvailable: true, isPopular: true },
-    { id: '3', categoryId: '3', name: 'Prestige', description: 'Bière locale fraîche', price: 150, isAvailable: true },
-    { id: '4', categoryId: '4', name: 'Flan Coco', description: 'Dessert traditionnel à la noix de coco', price: 200, isAvailable: true }
+    { 
+      id: '1', 
+      categoryId: '1', 
+      name: 'Salade César', 
+      description: 'Salade fraîche avec croûtons et parmesan', 
+      price: 450, 
+      isAvailable: true, 
+      isPopular: true,
+      image: 'https://images.pexels.com/photos/1059905/pexels-photo-1059905.jpeg?auto=compress&cs=tinysrgb&w=400'
+    },
+    { 
+      id: '2', 
+      categoryId: '2', 
+      name: 'Griot avec Banann', 
+      description: 'Porc frit traditionnel avec bananes plantains', 
+      price: 850, 
+      isAvailable: true, 
+      isPopular: true,
+      image: 'https://images.pexels.com/photos/1640777/pexels-photo-1640777.jpeg?auto=compress&cs=tinysrgb&w=400'
+    },
+    { 
+      id: '3', 
+      categoryId: '3', 
+      name: 'Prestige', 
+      description: 'Bière locale fraîche', 
+      price: 150, 
+      isAvailable: true,
+      image: 'https://images.pexels.com/photos/1552630/pexels-photo-1552630.jpeg?auto=compress&cs=tinysrgb&w=400'
+    },
+    { 
+      id: '4', 
+      categoryId: '4', 
+      name: 'Flan Coco', 
+      description: 'Dessert traditionnel à la noix de coco', 
+      price: 200, 
+      isAvailable: true,
+      image: 'https://images.pexels.com/photos/1126359/pexels-photo-1126359.jpeg?auto=compress&cs=tinysrgb&w=400'
+    }
   ]
 };
 
