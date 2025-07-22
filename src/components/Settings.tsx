@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Settings as SettingsIcon, Save, DollarSign, Building, Trash2, AlertTriangle, Calendar } from 'lucide-react';
+import { Settings as SettingsIcon, Save, DollarSign, Building, Trash2, AlertTriangle, Calendar, ChefHat } from 'lucide-react';
 import { useApp } from '../context/AppContext';
 
 const Settings: React.FC = () => {
@@ -7,7 +7,9 @@ const Settings: React.FC = () => {
   const [formData, setFormData] = useState({
     momentPrice: state.settings.momentPrice,
     nightPrice: state.settings.nightPrice,
-    motelName: state.settings.motelName
+    motelName: state.settings.motelName,
+    restaurantName: state.settings.restaurantName,
+    restaurantDescription: state.settings.restaurantDescription
   });
   const [saved, setSaved] = useState(false);
   const [showDeleteConfirm, setShowDeleteConfirm] = useState<string | null>(null);
@@ -163,6 +165,35 @@ const Settings: React.FC = () => {
                 onChange={(e) => setFormData({ ...formData, motelName: e.target.value })}
                 className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent"
                 placeholder="Ex: Parapli ROOM"
+                required
+              />
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2 flex items-center">
+                <ChefHat className="h-4 w-4 mr-2" />
+                Nom du Restaurant
+              </label>
+              <input
+                type="text"
+                value={formData.restaurantName}
+                onChange={(e) => setFormData({ ...formData, restaurantName: e.target.value })}
+                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent"
+                placeholder="Ex: Parapli Bar & Restaurant"
+                required
+              />
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                Description du Restaurant
+              </label>
+              <textarea
+                value={formData.restaurantDescription}
+                onChange={(e) => setFormData({ ...formData, restaurantDescription: e.target.value })}
+                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent"
+                placeholder="Description de votre restaurant"
+                rows={3}
                 required
               />
             </div>

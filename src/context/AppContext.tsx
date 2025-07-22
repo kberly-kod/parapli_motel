@@ -15,7 +15,13 @@ type AppAction =
   | { type: 'DELETE_NIGHT'; payload: string }
   | { type: 'UPDATE_SETTINGS'; payload: Settings }
   | { type: 'LOAD_DATA'; payload: AppState }
-  | { type: 'UPDATE_ROOM_STATUS_AUTO'; payload: { roomId: string; isAvailable: boolean; isClean: boolean } };
+  | { type: 'UPDATE_ROOM_STATUS_AUTO'; payload: { roomId: string; isAvailable: boolean; isClean: boolean } }
+  | { type: 'ADD_MENU_CATEGORY'; payload: MenuCategory }
+  | { type: 'UPDATE_MENU_CATEGORY'; payload: MenuCategory }
+  | { type: 'DELETE_MENU_CATEGORY'; payload: string }
+  | { type: 'ADD_MENU_ITEM'; payload: MenuItem }
+  | { type: 'UPDATE_MENU_ITEM'; payload: MenuItem }
+  | { type: 'DELETE_MENU_ITEM'; payload: string };
 
 const initialState: AppState = {
   rooms: [
@@ -28,9 +34,23 @@ const initialState: AppState = {
   settings: {
     momentPrice: 1500,
     nightPrice: 5000,
-    motelName: 'Parapli ROOM'
+    motelName: 'Parapli ROOM',
+    restaurantName: 'Parapli Bar & Restaurant',
+    restaurantDescription: 'Savourez nos délicieux plats et boissons dans une ambiance chaleureuse'
   },
-  isAuthenticated: false
+  isAuthenticated: false,
+  menuCategories: [
+    { id: '1', name: 'Entrées', description: 'Pour bien commencer', order: 1, isActive: true },
+    { id: '2', name: 'Plats Principaux', description: 'Nos spécialités', order: 2, isActive: true },
+    { id: '3', name: 'Boissons', description: 'Rafraîchissements et cocktails', order: 3, isActive: true },
+    { id: '4', name: 'Desserts', description: 'Douceurs pour finir', order: 4, isActive: true }
+  ],
+  menuItems: [
+    { id: '1', categoryId: '1', name: 'Salade César', description: 'Salade fraîche avec croûtons et parmesan', price: 450, isAvailable: true, isPopular: true },
+    { id: '2', categoryId: '2', name: 'Griot avec Banann', description: 'Porc frit traditionnel avec bananes plantains', price: 850, isAvailable: true, isPopular: true },
+    { id: '3', categoryId: '3', name: 'Prestige', description: 'Bière locale fraîche', price: 150, isAvailable: true },
+    { id: '4', categoryId: '4', name: 'Flan Coco', description: 'Dessert traditionnel à la noix de coco', price: 200, isAvailable: true }
+  ]
 };
 
 // Fonction pour vérifier si une chambre est actuellement occupée
@@ -232,6 +252,35 @@ function appReducer(state: AppState, action: AppAction): AppState {
             ? { ...room, isAvailable: action.payload.isAvailable, isClean: action.payload.isClean }
             : room
         )
+      };
+    case 'ADD_MENU_CATEGORY':
+      return { ...state, menuCategories: [...state.menuCategories, action.payload] };
+    case 'UPDATE_MENU_CATEGORY':
+      return {
+        ...state,
+        menuCategories: state.menuCategories.map(category => 
+          category.id === action.payload.id ? action.payload : category
+        )
+      };
+    case 'DELETE_MENU_CATEGORY':
+      return {
+        ...state,
+        menuCategories: state.menuCategories.filter(category => category.id !== action.payload),
+        menuItems: state.menuItems.filter(item => item.categoryId !== action.payload)
+      };
+    case 'ADD_MENU_ITEM':
+      return { ...state, menuItems: [...state.menuItems, action.payload] };
+    case 'UPDATE_MENU_ITEM':
+      return {
+        ...state,
+        menuItems: state.menuItems.map(item => 
+          item.id === action.payload.id ? action.payload : item
+        )
+      };
+    case 'DELETE_MENU_ITEM':
+      return {
+        ...state,
+        menuItems: state.menuItems.filter(item => item.id !== action.payload)
       };
     default:
       return state;

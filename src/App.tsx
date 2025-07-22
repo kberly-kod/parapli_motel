@@ -9,11 +9,14 @@ import NightsManagement from './components/NightsManagement';
 import Reports from './components/Reports';
 import Settings from './components/Settings';
 import PublicRoomStatus from './components/PublicRoomStatus';
+import MenuManagement from './components/MenuManagement';
+import PublicMenu from './components/PublicMenu';
 
 const AppContent: React.FC = () => {
   const { state } = useApp();
   const [currentPage, setCurrentPage] = useState('dashboard');
   const [viewMode, setViewMode] = useState<'admin' | 'public'>('public'); // Par défaut: public
+  const [showPublicMenu, setShowPublicMenu] = useState(false);
 
   // Vérifier l'URL pour l'accès admin
   useEffect(() => {
@@ -24,8 +27,12 @@ const AppContent: React.FC = () => {
       // Vérifier si l'URL contient /admin_parapli
       if (path.includes('/admin_parapli') || hash.includes('/admin_parapli')) {
         setViewMode('admin');
+      } else if (hash.includes('#menu')) {
+        setViewMode('public');
+        setShowPublicMenu(true);
       } else {
         setViewMode('public');
+        setShowPublicMenu(false);
       }
     };
 
@@ -60,7 +67,15 @@ const AppContent: React.FC = () => {
 
   // Mode public - page par défaut
   if (viewMode === 'public') {
-    return <PublicRoomStatus onSwitchToAdmin={switchToAdmin} />;
+    if (showPublicMenu) {
+      return <PublicMenu onBack={() => setShowPublicMenu(false)} />;
+    }
+    return (
+      <PublicRoomStatus 
+        onSwitchToAdmin={switchToAdmin}
+        onShowMenu={() => setShowPublicMenu(true)}
+      />
+    );
   }
 
   // Mode admin - nécessite authentification
@@ -80,6 +95,8 @@ const AppContent: React.FC = () => {
         return <NightsManagement />;
       case 'reports':
         return <Reports />;
+      case 'menu':
+        return <MenuManagement />;
       case 'settings':
         return <Settings />;
       default:
