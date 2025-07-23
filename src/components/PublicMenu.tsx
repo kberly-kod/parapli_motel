@@ -4,7 +4,8 @@ import { useApp } from '../context/AppContext';
 import QRCodeGenerator from './QRCodeGenerator';
 
 export default function PublicMenu() {
-  const { menuCategories, menuItems, settings } = useApp();
+  const { state } = useApp();
+  const { menuCategories, menuItems, settings } = state;
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedCategory, setSelectedCategory] = useState<string>('');
   const [showQRCode, setShowQRCode] = useState(false);
@@ -26,7 +27,7 @@ export default function PublicMenu() {
     if (navigator.share) {
       try {
         await navigator.share({
-          title: `Menu - ${settings.businessName}`,
+          title: `Menu - ${settings.restaurantName}`,
           text: `Découvrez notre menu délicieux !`,
           url: url
         });
@@ -55,7 +56,7 @@ export default function PublicMenu() {
               </div>
               <div>
                 <h1 className="text-3xl font-bold text-gray-800">Notre Menu</h1>
-                <p className="text-gray-600">{settings.businessName}</p>
+                <p className="text-gray-600">{settings.restaurantName}</p>
               </div>
             </div>
             <div className="flex items-center space-x-3">

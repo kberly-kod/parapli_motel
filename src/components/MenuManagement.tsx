@@ -4,7 +4,8 @@ import { useApp } from '../context/AppContext';
 import { MenuCategory, MenuItem } from '../types';
 
 export default function MenuManagement() {
-  const { menuCategories, menuItems, addMenuCategory, updateMenuCategory, deleteMenuCategory, addMenuItem, updateMenuItem, deleteMenuItem } = useApp();
+  const { state, dispatch } = useApp();
+  const { menuCategories, menuItems } = state;
   const [activeTab, setActiveTab] = useState<'categories' | 'items'>('categories');
   const [editingCategory, setEditingCategory] = useState<MenuCategory | null>(null);
   const [editingItem, setEditingItem] = useState<MenuItem | null>(null);
@@ -26,9 +27,13 @@ export default function MenuManagement() {
   const handleAddCategory = () => {
     if (newCategory.name.trim()) {
       const maxOrder = Math.max(...menuCategories.map(c => c.order), -1);
-      addMenuCategory({
+      dispatch({
+        type: 'ADD_MENU_CATEGORY',
+        payload: {
+          id: Date.now().toString(),
         ...newCategory,
         order: maxOrder + 1
+        }
       });
       setNewCategory({ name: '', order: 0 });
       setShowCategoryForm(false);
@@ -37,23 +42,34 @@ export default function MenuManagement() {
 
   const handleUpdateCategory = () => {
     if (editingCategory) {
-      updateMenuCategory(editingCategory.id, editingCategory);
+      dispatch({
+        type: 'UPDATE_MENU_CATEGORY',
+        payload: { id: editingCategory.id, updates: editingCategory }
+      });
       setEditingCategory(null);
     }
   };
 
   const handleDeleteCategory = (id: string) => {
     if (confirm('Êtes-vous sûr de vouloir supprimer cette catégorie ?')) {
-      deleteMenuCategory(id);
+      dispatch({
+        type: 'DELETE_MENU_CATEGORY',
+        payload: { id }
+      });
     }
   };
 
   const handleAddItem = () => {
     if (newItem.name.trim() && newItem.categoryId) {
-      addMenuItem({
+      dispatch({
+        type: 'ADD_MENU_ITEM',
+        payload: {
+          id: Date.now().toString(),
         ...newItem,
         price: parseFloat(newItem.price) || 0,
-        preparationTime: parseInt(newItem.preparationTime) || 0
+          preparationTime: parseInt(newItem.preparationTime) || 0,
+          allergens: newItem.allergens ? newItem.allergens.split(',').map(a => a.trim()) : []
+        }
       });
       setNewItem({
         name: '',
@@ -72,10 +88,17 @@ export default function MenuManagement() {
 
   const handleUpdateItem = () => {
     if (editingItem) {
-      updateMenuItem(editingItem.id, {
+      dispatch({
+        type: 'UPDATE_MENU_ITEM',
+        payload: {
+          id: editingItem.id,
+          updates: {
         ...editingItem,
         price: typeof editingItem.price === 'string' ? parseFloat(editingItem.price) || 0 : editingItem.price,
-        preparationTime: typeof editingItem.preparationTime === 'string' ? parseInt(editingItem.preparationTime) || 0 : editingItem.preparationTime
+            preparationTime: typeof editingItem.preparationTime === 'string' ? parseInt(editingItem.preparationTime) || 0 : editingItem.preparationTime,
+            allergens: typeof editingItem.allergens === 'string' ? editingItem.allergens.split(',').map(a => a.trim()) : editingItem.allergens
+          }
+        }
       });
       setEditingItem(null);
     }
@@ -83,7 +106,10 @@ export default function MenuManagement() {
 
   const handleDeleteItem = (id: string) => {
     if (confirm('Êtes-vous sûr de vouloir supprimer cet article ?')) {
-      deleteMenuItem(id);
+      dispatch({
+        type: 'DELETE_MENU_ITEM',
+        payload: { id }
+      });
     }
   };
 
@@ -96,12 +122,24 @@ export default function MenuManagement() {
     
     if (direction === 'up' && currentIndex > 0) {
       const targetCategory = sortedCategories[currentIndex - 1];
-      updateMenuCategory(id, { ...category, order: targetCategory.order });
-      updateMenuCategory(targetCategory.id, { ...targetCategory, order: category.order });
+      dispatch({
+        type: 'UPDATE_MENU_CATEGORY',
+        payload: { id, updates: { ...category, order: targetCategory.order } }
+      });
+      dispatch({
+        type: 'UPDATE_MENU_CATEGORY',
+        payload: { id: targetCategory.id, updates: { ...targetCategory, order: category.order } }
+      });
     } else if (direction === 'down' && currentIndex < sortedCategories.length - 1) {
       const targetCategory = sortedCategories[currentIndex + 1];
-      updateMenuCategory(id, { ...category, order: targetCategory.order });
-      updateMenuCategory(targetCategory.id, { ...targetCategory, order: category.order });
+      dispatch({
+        type: 'UPDATE_MENU_CATEGORY',
+        payload: { id, updates: { ...category, order: targetCategory.order } }
+      });
+      dispatch({
+        type: 'UPDATE_MENU_CATEGORY',
+        payload: { id: targetCategory.id, updates: { ...targetCategory, order: category.order } }
+      });
     }
   };
 
