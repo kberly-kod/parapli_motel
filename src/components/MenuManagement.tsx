@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import { Plus, Edit2, Trash2, Save, X, ChefHat, Star, Clock, AlertTriangle, ArrowUp, ArrowDown } from 'lucide-react';
-import { useAppContext } from '../context/AppContext';
+import { useApp } from '../context/AppContext';
 import { MenuCategory, MenuItem } from '../types';
 
 export default function MenuManagement() {
-  const { menuCategories, menuItems, addMenuCategory, updateMenuCategory, deleteMenuCategory, addMenuItem, updateMenuItem, deleteMenuItem } = useAppContext();
+  const { menuCategories, menuItems, addMenuCategory, updateMenuCategory, deleteMenuCategory, addMenuItem, updateMenuItem, deleteMenuItem } = useApp();
   const [activeTab, setActiveTab] = useState<'categories' | 'items'>('categories');
   const [editingCategory, setEditingCategory] = useState<MenuCategory | null>(null);
   const [editingItem, setEditingItem] = useState<MenuItem | null>(null);

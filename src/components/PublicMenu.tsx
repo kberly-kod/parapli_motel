@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import { Search, Filter, Star, Clock, AlertTriangle, QrCode, Share2, ChefHat, X } from 'lucide-react';
-import { useAppContext } from '../context/AppContext';
+import { useApp } from '../context/AppContext';
 import QRCodeGenerator from './QRCodeGenerator';
 
 export default function PublicMenu() {
-  const { menuCategories, menuItems, settings } = useAppContext();
+  const { menuCategories, menuItems, settings } = useApp();
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedCategory, setSelectedCategory] = useState<string>('');
   const [showQRCode, setShowQRCode] = useState(false);
