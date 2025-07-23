@@ -42,8 +42,6 @@ export interface Settings {
   momentPrice: number;
   nightPrice: number;
   motelName: string;
-  restaurantName: string;
-  restaurantDescription: string;
 }
 
 export interface AppState {
@@ -52,27 +50,4 @@ export interface AppState {
   nights: Night[];
   settings: Settings;
   isAuthenticated: boolean;
-  menuCategories: MenuCategory[];
-  menuItems: MenuItem[];
-}
-
-export interface MenuCategory {
-  id: string;
-  name: string;
-  description?: string;
-  order: number;
-  isActive: boolean;
-}
-
-export interface MenuItem {
-  id: string;
-  categoryId: string;
-  name: string;
-  description: string;
-  price: number;
-  image?: string;
-  isAvailable: boolean;
-  isPopular?: boolean;
-  allergens?: string[];
-  preparationTime?: number; // en minutes
 }

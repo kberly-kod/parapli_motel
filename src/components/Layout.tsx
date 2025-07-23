@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Bed, Home, Clock, Moon, Settings, Users, LogOut, BarChart3, Eye, QrCode, ChefHat } from 'lucide-react';
+import { Bed, Home, Clock, Moon, Settings, Users, LogOut, BarChart3, Eye, QrCode } from 'lucide-react';
 import { useApp } from '../context/AppContext';
 import QRCodeGenerator from './QRCodeGenerator';
 
@@ -30,7 +30,6 @@ const Layout: React.FC<LayoutProps> = ({ children, currentPage, onNavigate, onSw
     { id: 'rooms', label: 'Chambres', icon: Bed },
     { id: 'moments', label: 'Moments', icon: Clock },
     { id: 'nights', label: 'Nuits', icon: Moon },
-    { id: 'menu', label: 'Menu Restaurant', icon: ChefHat },
     { id: 'reports', label: 'Rapports', icon: BarChart3 },
     { id: 'settings', label: 'Paramètres', icon: Settings },
   ];

@@ -1,14 +1,13 @@
 import React, { useState, useEffect } from 'react';
-import { Bed, Clock, Moon, RefreshCw, Shield, Timer, Calendar, Wifi, Phone, MapPin, Star, Users, Info, QrCode, Share2, ChefHat } from 'lucide-react';
+import { Bed, Clock, Moon, RefreshCw, Shield, Timer, Calendar, Wifi, Phone, MapPin, Star, Users, Info, QrCode, Share2 } from 'lucide-react';
 import { useApp } from '../context/AppContext';
 import QRCodeGenerator from './QRCodeGenerator';
 
 interface PublicRoomStatusProps {
   onSwitchToAdmin: () => void;
-  onShowMenu: () => void;
 }
 
-const PublicRoomStatus: React.FC<PublicRoomStatusProps> = ({ onSwitchToAdmin, onShowMenu }) => {
+const PublicRoomStatus: React.FC<PublicRoomStatusProps> = ({ onSwitchToAdmin }) => {
   const { state } = useApp();
   const [currentTime, setCurrentTime] = useState(new Date());
   const [lastUpdate, setLastUpdate] = useState(new Date());
@@ -167,16 +166,6 @@ const PublicRoomStatus: React.FC<PublicRoomStatusProps> = ({ onSwitchToAdmin, on
               >
                 <QrCode className="h-4 w-4" />
                 <span className="hidden md:inline">Partager QR</span>
-              </button>
-              
-              {/* Menu Button */}
-              <button
-                onClick={onShowMenu}
-                className="flex items-center space-x-2 bg-gradient-to-r from-green-500 to-blue-500 hover:from-green-600 hover:to-blue-600 text-white px-4 py-2 rounded-lg transition-all duration-200 shadow-lg transform hover:scale-105"
-                title="Voir le menu du restaurant"
-              >
-                <ChefHat className="h-4 w-4" />
-                <span className="hidden md:inline">Menu</span>
               </button>
               
               <button
